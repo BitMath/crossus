@@ -6,6 +6,7 @@ ruby '2.0.0'
 gem 'rails', '4.0.3'
 gem 'bootstrap-sass', '3.1.1.0'
 gem 'pg', '0.17.1'
+gem 'bcrypt-ruby', '3.1.5'
 
 # Use sqlite3 as the database for Active Record
 
@@ -21,6 +22,7 @@ end
 group :test do
   gem 'selenium-webdriver', '2.40.0'
   gem 'capybara', '2.2.1'
+  gem 'factory_girl_rails', '4.4.1'
 end
 
 
