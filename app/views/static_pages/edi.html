@@ -1,0 +1,1712 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>EDI Reading Helper beta - baron@gridbon.com</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link href="http://getbootstrap.com/2.3.2/assets/css/bootstrap.css" rel="stylesheet">
+	<link href="http://getbootstrap.com/2.3.2/assets/css/bootstrap-responsive.css" rel="stylesheet">
+	<!--link href="http://getbootstrap.com/2.3.2/assets/js/google-code-prettify/prettify.css" rel="stylesheet"-->
+
+    <script type="text/javascript">
+
+    var dataElementArr = new Array();
+    dataElementArr['ADR'] = 'Address';
+    dataElementArr['AGR'] = 'Agreement identification';
+    dataElementArr['AJT'] = 'Adjustment details';
+    dataElementArr['ALC'] = 'Allowance or charge';
+    dataElementArr['ALI'] = 'Additional information';
+    dataElementArr['APR'] = 'Additional price information';
+    dataElementArr['ARD'] = 'Amounts relationship details';
+    dataElementArr['ARR'] = 'Array information';
+    dataElementArr['ASI'] = 'Array structure identification';
+    dataElementArr['ATT'] = 'Attribute';
+    dataElementArr['AUT'] = 'Authentication result';
+    dataElementArr['BGM'] = 'Beginning of message';
+    dataElementArr['BII'] = 'Structure identification';
+    dataElementArr['BUS'] = 'Business function';
+    dataElementArr['CAV'] = 'Characteristic value';
+    dataElementArr['CCD'] = 'Credit cover details';
+    dataElementArr['CCI'] = 'Characteristic/class id';
+    dataElementArr['CDS'] = 'Code set identification';
+    dataElementArr['CDV'] = 'Code value definition';
+    dataElementArr['CED'] = 'Computer environment details';
+    dataElementArr['CMP'] = 'Composite data element identification';
+    dataElementArr['CNI'] = 'Consignment information';
+    dataElementArr['CNT'] = 'Control total';
+    dataElementArr['COD'] = 'Component details';
+    dataElementArr['COM'] = 'Communication contact';
+    dataElementArr['COT'] = 'Contribution details';
+    dataElementArr['CPI'] = 'Charge payment instructions';
+    dataElementArr['CPS'] = 'Consignment packing sequence';
+    dataElementArr['CST'] = 'Customs status of goods';
+    dataElementArr['CTA'] = 'Contact information';
+    dataElementArr['CUX'] = 'Currencies';
+    dataElementArr['DAM'] = 'Damage';
+    dataElementArr['DGS'] = 'Dangerous goods';
+    dataElementArr['DII'] = 'Directory identification';
+    dataElementArr['DIM'] = 'Dimensions';
+    dataElementArr['DLI'] = 'Document line identification';
+    dataElementArr['DLM'] = 'Delivery limitations';
+    dataElementArr['DMS'] = 'Document/message summary';
+    dataElementArr['DOC'] = 'Document/message details';
+    dataElementArr['DSI'] = 'Data set identification';
+    dataElementArr['DTM'] = 'Date/time/period';
+    dataElementArr['EFI'] = 'External file link identification';
+    dataElementArr['ELM'] = 'Simple data element details';
+    dataElementArr['ELU'] = 'Data element usage details';
+    dataElementArr['EMP'] = 'Employment details';
+    dataElementArr['EQA'] = 'Attached equipment';
+    dataElementArr['EQD'] = 'Equipment details';
+    dataElementArr['EQN'] = 'Number of units';
+    dataElementArr['ERC'] = 'Application error information';
+    dataElementArr['ERP'] = 'Error point details';
+    dataElementArr['FCA'] = 'Financial charges allocation';
+    dataElementArr['FII'] = 'Financial institution information';
+    dataElementArr['FNS'] = 'Footnote set';
+    dataElementArr['FNT'] = 'Footnote';
+    dataElementArr['FTX'] = 'Free text';
+    dataElementArr['GDS'] = 'Nature of cargo';
+    dataElementArr['GID'] = 'Goods item details';
+    dataElementArr['GIN'] = 'Goods identity number';
+    dataElementArr['GIR'] = 'Related identification numbers';
+    dataElementArr['GIS'] = 'General indicator';
+    dataElementArr['GOR'] = 'Governmental requirements';
+    dataElementArr['GRU'] = 'Segment group usage details';
+    dataElementArr['HAN'] = 'Handling instructions';
+    dataElementArr['ICD'] = 'Insurance cover description';
+    dataElementArr['IDE'] = 'Identity';
+    dataElementArr['IHC'] = 'Person characteristic';
+    dataElementArr['IMD'] = 'Item description';
+    dataElementArr['IND'] = 'Index details';
+    dataElementArr['INP'] = 'Parties to instruction';
+    dataElementArr['INV'] = 'Inventory management related details';
+    dataElementArr['IRQ'] = 'Information required';
+    dataElementArr['LAN'] = 'Language';
+    dataElementArr['LIN'] = 'Line item';
+    dataElementArr['LOC'] = 'Place/location identification';
+    dataElementArr['MEA'] = 'Measurements';
+    dataElementArr['MEM'] = 'Membership details';
+    dataElementArr['MKS'] = 'Market/sales channel information';
+    dataElementArr['MOA'] = 'Monetary amount';
+    dataElementArr['MSG'] = 'Message type identification';
+    dataElementArr['NAD'] = 'Name and address';
+    dataElementArr['NAT'] = 'Nationality';
+    dataElementArr['PAC'] = 'Package';
+    dataElementArr['PAI'] = 'Payment instructions';
+    dataElementArr['PAT'] = 'Payment terms basis';
+    dataElementArr['PCD'] = 'Percentage details';
+    dataElementArr['PCI'] = 'Package identification';
+    dataElementArr['PDI'] = 'Person demographic information';
+    dataElementArr['PGI'] = 'Product group information';
+    dataElementArr['PIA'] = 'Additional product id';
+    dataElementArr['PIT'] = 'Price item line';
+    dataElementArr['PNA'] = 'Party name';
+    dataElementArr['PRC'] = 'Process identification';
+    dataElementArr['PRI'] = 'Price details';
+    dataElementArr['PSD'] = 'Physical sample description';
+    dataElementArr['PTY'] = 'Priority';
+    dataElementArr['QTY'] = 'Quantity';
+    dataElementArr['QVR'] = 'Quantity variances';
+    dataElementArr['RCS'] = 'Requirements and conditions';
+    dataElementArr['REL'] = 'Relationship';
+    dataElementArr['RFF'] = 'Reference';
+    dataElementArr['RNG'] = 'Range details';
+    dataElementArr['RTE'] = 'Rate details';
+    dataElementArr['SAL'] = 'Remuneration type identification';
+    dataElementArr['SCC'] = 'Scheduling conditions';
+    dataElementArr['SCD'] = 'Structure component definition';
+    dataElementArr['SEG'] = 'Segment identification';
+    dataElementArr['SEL'] = 'Seal number';
+    dataElementArr['SEQ'] = 'Sequence details';
+    dataElementArr['SFI'] = 'Safety information';
+    dataElementArr['SGP'] = 'Split goods placement';
+    dataElementArr['SGU'] = 'Segment usage details';
+    dataElementArr['SPS'] = 'Sampling parameters for summary statistics';
+    dataElementArr['STA'] = 'Statistics';
+    dataElementArr['STC'] = 'Statistical concept';
+    dataElementArr['STG'] = 'Stages';
+    dataElementArr['STS'] = 'Status';
+    dataElementArr['TAX'] = 'Duty/tax/fee details';
+    dataElementArr['TCC'] = 'Transport charge/rate calculations';
+    dataElementArr['TDT'] = 'Details of transport';
+    dataElementArr['TEM'] = 'Test method';
+    dataElementArr['TMD'] = 'Transport movement details';
+    dataElementArr['TMP'] = 'Temperature';
+    dataElementArr['TOD'] = 'Terms of delivery or transport';
+    dataElementArr['TPL'] = 'Transport placement';
+    dataElementArr['TSR'] = 'Transport service requirements';
+    dataElementArr['VLI'] = 'Value list identification';
+    dataElementArr['UNT'] = 'Message Trailer';
+    dataElementArr['UNH'] = 'Message Header';
+    dataElementArr['UNB'] = 'Interchange Header';
+    dataElementArr['UNZ'] = 'Interchange Trailer';
+    dataElementArr['0001'] = 'Syntax identifier';
+    dataElementArr['0002'] = 'Syntax version number';
+    dataElementArr['0004'] = 'Sender identification';
+    dataElementArr['0007'] = 'Partner identification code qualifier';
+    dataElementArr['0008'] = 'Address for reverse routing';
+    dataElementArr['0010'] = 'Recipient identification';
+    dataElementArr['0007'] = 'Partner identification code qualifier';
+    dataElementArr['0014'] = 'Routing address';
+    dataElementArr['0017'] = 'Date of preparation';
+    dataElementArr['0019'] = 'Time of preparation';
+    dataElementArr['0020'] = 'INTERCHANGE CONTROL REFERENCE';
+    dataElementArr['0022'] = 'Recipient\'s reference/password';
+    dataElementArr['0025'] = 'Recipient\'s reference/password qualifier';
+    dataElementArr['0026'] = 'APPLICATION REFERENCE';
+    dataElementArr['0029'] = 'PROCESSING PRIORITY CODE';
+    dataElementArr['0031'] = 'ACKNOWLEDGEMENT REQUEST';
+    dataElementArr['0032'] = 'COMMUNICATIONS AGREEMENT ID';
+    dataElementArr['0035'] = 'TEST INDICATOR';
+    dataElementArr['0036'] = 'INTERCHANGE CONTROL COUNT';
+    dataElementArr['0062'] = 'MESSAGE REFERENCE NUMBER';
+    dataElementArr['0065'] = 'Message type';
+    dataElementArr['0052'] = 'Message version number';
+    dataElementArr['0054'] = 'Message release number';
+    dataElementArr['0051'] = 'Controlling agency';
+    dataElementArr['0057'] = 'Association assigned code';
+    dataElementArr['0068'] = 'COMMON ACCESS REFERENCE';
+    dataElementArr['0070'] = 'Sequence of transfers';
+    dataElementArr['0073'] = 'First and last transfer';
+    dataElementArr['0074'] = 'NUMBER OF SEGMENTS IN THE MESSAGE';
+    dataElementArr['1000'] = 'Document/message name';
+    dataElementArr['1001'] = 'Document/message name, coded';
+    dataElementArr['1004'] = 'Document/message number';
+    dataElementArr['1049'] = 'Message section, coded';
+    dataElementArr['1050'] = 'Sequence number';
+    dataElementArr['1052'] = 'Message item number';
+    dataElementArr['1054'] = 'Message sub-item number';
+    dataElementArr['1056'] = 'Version';
+    dataElementArr['1058'] = 'Release';
+    dataElementArr['1060'] = 'Revision number';
+    dataElementArr['1073'] = 'Document line indicator, coded';
+    dataElementArr['1082'] = 'Line item number';
+    dataElementArr['1131'] = 'Code list qualifier';
+    dataElementArr['1153'] = 'Reference qualifier';
+    dataElementArr['1154'] = 'Reference number';
+    dataElementArr['1156'] = 'Line number';
+    dataElementArr['1159'] = 'Sequence number source, coded';
+    dataElementArr['1218'] = 'Number of originals of document required';
+    dataElementArr['1220'] = 'Number of copies of document required';
+    dataElementArr['1222'] = 'Configuration level';
+    dataElementArr['1225'] = 'Message function, coded';
+    dataElementArr['1227'] = 'Calculation sequence indicator, coded';
+    dataElementArr['1228'] = 'Action request/notification';
+    dataElementArr['1229'] = 'Action request/notification, coded';
+    dataElementArr['1230'] = 'Allowance or charge number';
+    dataElementArr['1245'] = 'Status indicator, coded';
+    dataElementArr['1312'] = 'Consignment load sequence number';
+    dataElementArr['1366'] = 'Document/message source';
+    dataElementArr['1373'] = 'Document/message status, coded';
+    dataElementArr['1475'] = 'Message type identifier';
+    dataElementArr['1476'] = 'Control agency';
+    dataElementArr['1490'] = 'Consolidation item number';
+    dataElementArr['1496'] = 'Goods item number';
+    dataElementArr['1501'] = 'Computer environment details qualifier';
+    dataElementArr['1502'] = 'Data format';
+    dataElementArr['1503'] = 'Data format, coded';
+    dataElementArr['1505'] = 'Value list type, coded';
+    dataElementArr['1507'] = 'Class designator, coded';
+    dataElementArr['1508'] = 'File name';
+    dataElementArr['1510'] = 'Computer environment';
+    dataElementArr['1511'] = 'Computer environment, coded';
+    dataElementArr['1514'] = 'Value list name';
+    dataElementArr['1516'] = 'File format';
+    dataElementArr['1518'] = 'Value list identifier';
+    dataElementArr['1520'] = 'Data set identifier';
+    dataElementArr['1523'] = 'Association assigned identification';
+    dataElementArr['2005'] = 'Date/time/period qualifier';
+    dataElementArr['2009'] = 'Time relation, coded';
+    dataElementArr['2013'] = 'Frequency, coded';
+    dataElementArr['2015'] = 'Despatch pattern, coded';
+    dataElementArr['2017'] = 'Despatch pattern timing, coded';
+    dataElementArr['2151'] = 'Type of period, coded';
+    dataElementArr['2152'] = 'Number of periods';
+    dataElementArr['2379'] = 'Date/time/period format qualifier';
+    dataElementArr['2380'] = 'Date/time/period';
+    dataElementArr['2475'] = 'Payment time reference, coded';
+    dataElementArr['3035'] = 'Party qualifier';
+    dataElementArr['3036'] = 'Party name';
+    dataElementArr['3039'] = 'Party id. identification';
+    dataElementArr['3042'] = 'Street and number/p.o. box';
+    dataElementArr['3045'] = 'Party name format, coded';
+    dataElementArr['3055'] = 'Code list responsible agency, coded';
+    dataElementArr['3077'] = 'Test media, coded';
+    dataElementArr['3124'] = 'Name and address line';
+    dataElementArr['3127'] = 'Carrier identification';
+    dataElementArr['3128'] = 'Carrier name';
+    dataElementArr['3131'] = 'Address type, coded';
+    dataElementArr['3139'] = 'Contact function, coded';
+    dataElementArr['3148'] = 'Communication number';
+    dataElementArr['3153'] = 'Communication channel identifier, coded';
+    dataElementArr['3155'] = 'Communication channel qualifier';
+    dataElementArr['3164'] = 'City name';
+    dataElementArr['3192'] = 'Account holder name';
+    dataElementArr['3194'] = 'Account holder number';
+    dataElementArr['3207'] = 'Country, coded';
+    dataElementArr['3222'] = 'Related place/location one';
+    dataElementArr['3223'] = 'Related place/location one identification';
+    dataElementArr['3224'] = 'Place/location';
+    dataElementArr['3225'] = 'Place/location identification';
+    dataElementArr['3227'] = 'Place/location qualifier';
+    dataElementArr['3228'] = 'Country sub-entity';
+    dataElementArr['3229'] = 'Country sub-entity identification';
+    dataElementArr['3232'] = 'Related place/location two';
+    dataElementArr['3233'] = 'Related place/location two identification';
+    dataElementArr['3236'] = 'Sample location';
+    dataElementArr['3237'] = 'Sample location, coded';
+    dataElementArr['3239'] = 'Country of origin, coded';
+    dataElementArr['3251'] = 'Postcode identification';
+    dataElementArr['3279'] = 'Geographic environment, coded';
+    dataElementArr['3285'] = 'Recipient of the instruction identification';
+    dataElementArr['3286'] = 'Address component';
+    dataElementArr['3289'] = 'Person characteristic qualifier';
+    dataElementArr['3292'] = 'Nationality';
+    dataElementArr['3293'] = 'Nationality, coded';
+    dataElementArr['3295'] = 'Name component original representation, coded';
+    dataElementArr['3299'] = 'Address purpose, coded';
+    dataElementArr['3301'] = 'Party enacting instruction identification';
+    dataElementArr['3310'] = 'Person inherited characteristic';
+    dataElementArr['3311'] = 'Person inherited characteristic identification';
+    dataElementArr['3397'] = 'Name status, coded';
+    dataElementArr['3398'] = 'Name component';
+    dataElementArr['3401'] = 'Name component status, coded';
+    dataElementArr['3403'] = 'Name type, coded';
+    dataElementArr['3405'] = 'Name component qualifier';
+    dataElementArr['3412'] = 'Department or employee';
+    dataElementArr['3413'] = 'Department or employee identification';
+    dataElementArr['3432'] = 'Institution name';
+    dataElementArr['3433'] = 'Institution name identification';
+    dataElementArr['3434'] = 'Institution branch number';
+    dataElementArr['3436'] = 'Institution branch place';
+    dataElementArr['3446'] = 'Party tax identification number';
+    dataElementArr['3452'] = 'Language';
+    dataElementArr['3453'] = 'Language, coded';
+    dataElementArr['3455'] = 'Language qualifier';
+    dataElementArr['3475'] = 'Address status, coded';
+    dataElementArr['3477'] = 'Address format, coded';
+    dataElementArr['3478'] = 'Marital status';
+    dataElementArr['3479'] = 'Marital status, coded';
+    dataElementArr['3482'] = 'Religion';
+    dataElementArr['3483'] = 'Religion, coded';
+    dataElementArr['3493'] = 'Nationality qualifier';
+    dataElementArr['3494'] = 'Job title';
+    dataElementArr['3496'] = 'Sales channel identifier';
+    dataElementArr['3499'] = 'Sex, coded';
+    dataElementArr['4000'] = 'Reference version number';
+    dataElementArr['4017'] = 'Delivery plan status indicator, coded';
+    dataElementArr['4022'] = 'Business description';
+    dataElementArr['4025'] = 'Business function, coded';
+    dataElementArr['4027'] = 'Business function qualifier';
+    dataElementArr['4035'] = 'Priority qualifier';
+    dataElementArr['4036'] = 'Priority';
+    dataElementArr['4037'] = 'Priority, coded';
+    dataElementArr['4038'] = 'Additional safety information';
+    dataElementArr['4039'] = 'Additional safety information, coded';
+    dataElementArr['4043'] = 'Class of trade, coded';
+    dataElementArr['4044'] = 'Safety section name';
+    dataElementArr['4046'] = 'Safety section';
+    dataElementArr['4052'] = 'Terms of delivery or transport';
+    dataElementArr['4053'] = 'Terms of delivery or transport, coded';
+    dataElementArr['4055'] = 'Terms of delivery or transport function, coded';
+    dataElementArr['4065'] = 'Contract and carriage condition, coded';
+    dataElementArr['4078'] = 'Handling instructions';
+    dataElementArr['4079'] = 'Handling instructions, coded';
+    dataElementArr['4183'] = 'Special conditions, coded';
+    dataElementArr['4215'] = 'Transport charges method of payment, coded';
+    dataElementArr['4219'] = 'Transport priority, coded';
+    dataElementArr['4221'] = 'Discrepancy, coded';
+    dataElementArr['4233'] = 'Marking instructions, coded';
+    dataElementArr['4237'] = 'Prepaid/collect indicator, coded';
+    dataElementArr['4276'] = 'Terms of payment';
+    dataElementArr['4277'] = 'Terms of payment identification';
+    dataElementArr['4279'] = 'Payment terms type qualifier';
+    dataElementArr['4294'] = 'Change reason';
+    dataElementArr['4295'] = 'Change reason, coded';
+    dataElementArr['4343'] = 'Response type, coded';
+    dataElementArr['4347'] = 'Product id. function qualifier';
+    dataElementArr['4383'] = 'Bank operation, coded';
+    dataElementArr['4400'] = 'Instruction';
+    dataElementArr['4401'] = 'Instruction, coded';
+    dataElementArr['4403'] = 'Instruction qualifier';
+    dataElementArr['4405'] = 'Status, coded';
+    dataElementArr['4407'] = 'Sample process status, coded';
+    dataElementArr['4415'] = 'Test method identification';
+    dataElementArr['4416'] = 'Test description';
+    dataElementArr['4419'] = 'Test route of administering, coded';
+    dataElementArr['4424'] = 'Test reason';
+    dataElementArr['4425'] = 'Test reason identification';
+    dataElementArr['4431'] = 'Payment guarantee, coded';
+    dataElementArr['4435'] = 'Payment channel, coded';
+    dataElementArr['4439'] = 'Payment conditions, coded';
+    dataElementArr['4440'] = 'Free text';
+    dataElementArr['4441'] = 'Free text, coded';
+    dataElementArr['4451'] = 'Text subject qualifier';
+    dataElementArr['4453'] = 'Text function, coded';
+    dataElementArr['4455'] = 'Back order, coded';
+    dataElementArr['4457'] = 'Product/service substitution, coded';
+    dataElementArr['4461'] = 'Payment means, coded';
+    dataElementArr['4463'] = 'Intra-company payment, coded';
+    dataElementArr['4465'] = 'Adjustment reason, coded';
+    dataElementArr['4471'] = 'Settlement, coded';
+    dataElementArr['4487'] = 'Type of financial transaction, coded';
+    dataElementArr['4493'] = 'Delivery requirements, coded';
+    dataElementArr['4494'] = 'Insurance cover';
+    dataElementArr['4495'] = 'Insurance cover identification';
+    dataElementArr['4497'] = 'Insurance cover type, coded';
+    dataElementArr['4499'] = 'Reason for inventory movement, coded';
+    dataElementArr['4501'] = 'Inventory movement direction, coded';
+    dataElementArr['4503'] = 'Inventory balance method, coded';
+    dataElementArr['4505'] = 'Credit cover request, coded';
+    dataElementArr['4507'] = 'Credit cover response, coded';
+    dataElementArr['4509'] = 'Credit cover reason, coded';
+    dataElementArr['4510'] = 'Requested information';
+    dataElementArr['4511'] = 'Requested information, coded';
+    dataElementArr['4513'] = 'Maintenance operation, coded';
+    dataElementArr['4517'] = 'Seal condition, coded';
+    dataElementArr['5004'] = 'Monetary amount';
+    dataElementArr['5007'] = 'Monetary function, coded';
+    dataElementArr['5013'] = 'Index qualifier';
+    dataElementArr['5025'] = 'Monetary amount type qualifier';
+    dataElementArr['5027'] = 'Index type, coded';
+    dataElementArr['5030'] = 'Index value';
+    dataElementArr['5039'] = 'Index value representation, coded';
+    dataElementArr['5047'] = 'Contribution qualifier';
+    dataElementArr['5048'] = 'Contribution type';
+    dataElementArr['5049'] = 'Contribution type, coded';
+    dataElementArr['5118'] = 'Price';
+    dataElementArr['5125'] = 'Price qualifier';
+    dataElementArr['5152'] = 'Duty/tax/fee type';
+    dataElementArr['5153'] = 'Duty/tax/fee type, coded';
+    dataElementArr['5189'] = 'Charge/allowance description, coded';
+    dataElementArr['5213'] = 'Sub-line price change, coded';
+    dataElementArr['5237'] = 'Charge category, coded';
+    dataElementArr['5242'] = 'Rate/tariff class';
+    dataElementArr['5243'] = 'Rate/tariff class identification';
+    dataElementArr['5245'] = 'Percentage qualifier';
+    dataElementArr['5249'] = 'Percentage basis, coded';
+    dataElementArr['5273'] = 'Duty/tax/fee rate basis identification';
+    dataElementArr['5275'] = 'Supplementary rate/tariff basis identification';
+    dataElementArr['5278'] = 'Duty/tax/fee rate';
+    dataElementArr['5279'] = 'Duty/tax/fee rate identification';
+    dataElementArr['5283'] = 'Duty/tax/fee function qualifier';
+    dataElementArr['5284'] = 'Unit price basis';
+    dataElementArr['5286'] = 'Duty/tax/fee assessment basis';
+    dataElementArr['5289'] = 'Duty/tax/fee account identification';
+    dataElementArr['5305'] = 'Duty/tax/fee category, coded';
+    dataElementArr['5314'] = 'Remuneration type';
+    dataElementArr['5315'] = 'Remuneration type, coded';
+    dataElementArr['5375'] = 'Price type, coded';
+    dataElementArr['5377'] = 'Price change indicator, coded';
+    dataElementArr['5379'] = 'Product group type, coded';
+    dataElementArr['5387'] = 'Price type qualifier';
+    dataElementArr['5388'] = 'Product group';
+    dataElementArr['5389'] = 'Product group, coded';
+    dataElementArr['5393'] = 'Price multiplier qualifier';
+    dataElementArr['5394'] = 'Price multiplier';
+    dataElementArr['5402'] = 'Rate of exchange';
+    dataElementArr['5419'] = 'Rate type qualifier';
+    dataElementArr['5420'] = 'Rate per unit';
+    dataElementArr['5463'] = 'Allowance or charge qualifier';
+    dataElementArr['5479'] = 'Relation, coded';
+    dataElementArr['5482'] = 'Percentage';
+    dataElementArr['5495'] = 'Sub-line indicator, coded';
+    dataElementArr['6008'] = 'Height dimension';
+    dataElementArr['6060'] = 'Quantity';
+    dataElementArr['6063'] = 'Quantity qualifier';
+    dataElementArr['6064'] = 'Quantity difference';
+    dataElementArr['6066'] = 'Control value';
+    dataElementArr['6069'] = 'Control qualifier';
+    dataElementArr['6071'] = 'Frequency qualifier';
+    dataElementArr['6072'] = 'Frequency value';
+    dataElementArr['6074'] = 'Confidence limit';
+    dataElementArr['6140'] = 'Width dimension';
+    dataElementArr['6145'] = 'Dimension qualifier';
+    dataElementArr['6152'] = 'Range maximum';
+    dataElementArr['6154'] = 'Measurement attribute';
+    dataElementArr['6155'] = 'Measurement attribute, coded';
+    dataElementArr['6162'] = 'Range minimum';
+    dataElementArr['6167'] = 'Range type qualifier';
+    dataElementArr['6168'] = 'Length dimension';
+    dataElementArr['6173'] = 'Size qualifier';
+    dataElementArr['6174'] = 'Size';
+    dataElementArr['6176'] = 'Maximum number of occurrences';
+    dataElementArr['6245'] = 'Temperature qualifier';
+    dataElementArr['6246'] = 'Temperature setting';
+    dataElementArr['6311'] = 'Measurement application qualifier';
+    dataElementArr['6313'] = 'Measurement dimension, coded';
+    dataElementArr['6314'] = 'Measurement value';
+    dataElementArr['6321'] = 'Measurement significance, coded';
+    dataElementArr['6331'] = 'Statistic type, coded';
+    dataElementArr['6341'] = 'Currency market exchange, coded';
+    dataElementArr['6343'] = 'Currency qualifier';
+    dataElementArr['6345'] = 'Currency, coded';
+    dataElementArr['6347'] = 'Currency details qualifier';
+    dataElementArr['6348'] = 'Currency rate base';
+    dataElementArr['6350'] = 'Number of units';
+    dataElementArr['6353'] = 'Number of units qualifier';
+    dataElementArr['6411'] = 'Measure unit qualifier';
+    dataElementArr['6426'] = 'Number of stages';
+    dataElementArr['6428'] = 'Actual stage count';
+    dataElementArr['6432'] = 'Significant digits';
+    dataElementArr['6434'] = 'Statistical concept identifier';
+    dataElementArr['7008'] = 'Item description';
+    dataElementArr['7009'] = 'Item description identification';
+    dataElementArr['7011'] = 'Article availability, coded';
+    dataElementArr['7036'] = 'Characteristic';
+    dataElementArr['7037'] = 'Characteristic identification';
+    dataElementArr['7039'] = 'Sample selection method, coded';
+    dataElementArr['7045'] = 'Sample description, coded';
+    dataElementArr['7047'] = 'Sample direction, coded';
+    dataElementArr['7059'] = 'Property class, coded';
+    dataElementArr['7064'] = 'Type of packages';
+    dataElementArr['7065'] = 'Type of packages identification';
+    dataElementArr['7073'] = 'Packaging terms and conditions, coded';
+    dataElementArr['7075'] = 'Packaging level, coded';
+    dataElementArr['7077'] = 'Item description type, coded';
+    dataElementArr['7081'] = 'Item characteristic, coded';
+    dataElementArr['7083'] = 'Configuration, coded';
+    dataElementArr['7085'] = 'Nature of cargo, coded';
+    dataElementArr['7088'] = 'Dangerous goods flashpoint';
+    dataElementArr['7102'] = 'Shipping marks';
+    dataElementArr['7106'] = 'Shipment flashpoint';
+    dataElementArr['7110'] = 'Characteristic value';
+    dataElementArr['7111'] = 'Characteristic value, coded';
+    dataElementArr['7124'] = 'UNDG number';
+    dataElementArr['7130'] = 'Customer authorization number';
+    dataElementArr['7140'] = 'Item number';
+    dataElementArr['7143'] = 'Item number type, coded';
+    dataElementArr['7160'] = 'Special service';
+    dataElementArr['7161'] = 'Special services, coded';
+    dataElementArr['7164'] = 'Hierarchical id. number';
+    dataElementArr['7166'] = 'Hierarchical parent id.';
+    dataElementArr['7168'] = 'Level number';
+    dataElementArr['7186'] = 'Process type';
+    dataElementArr['7187'] = 'Process type identification';
+    dataElementArr['7188'] = 'Test revision number';
+    dataElementArr['7224'] = 'Number of packages';
+    dataElementArr['7233'] = 'Packaging related information, coded';
+    dataElementArr['7240'] = 'Total number of items';
+    dataElementArr['7273'] = 'Service requirement, coded';
+    dataElementArr['7293'] = 'Sector/subject identification qualifier';
+    dataElementArr['7294'] = 'Requirement or condition';
+    dataElementArr['7295'] = 'Requirement/condition identification';
+    dataElementArr['7297'] = 'Set identification qualifier';
+    dataElementArr['7299'] = 'Requirement designator, coded';
+    dataElementArr['7357'] = 'Commodity/rate identification';
+    dataElementArr['7361'] = 'Customs code identification';
+    dataElementArr['7365'] = 'Processing indicator, coded';
+    dataElementArr['7383'] = 'Surface/layer indicator, coded';
+    dataElementArr['7402'] = 'Identity number';
+    dataElementArr['7405'] = 'Identity number qualifier';
+    dataElementArr['7419'] = 'Hazardous material class code, identification';
+    dataElementArr['7429'] = 'Indexing structure qualifier';
+    dataElementArr['7431'] = 'Agreement type qualifier';
+    dataElementArr['7433'] = 'Agreement type, coded';
+    dataElementArr['7434'] = 'Agreement type description';
+    dataElementArr['7436'] = 'Level one id.';
+    dataElementArr['7438'] = 'Level two id.';
+    dataElementArr['7440'] = 'Level three id.';
+    dataElementArr['7442'] = 'Level four id.';
+    dataElementArr['7444'] = 'Level five id.';
+    dataElementArr['7446'] = 'Level six id.';
+    dataElementArr['7449'] = 'Membership qualifier';
+    dataElementArr['7450'] = 'Membership category';
+    dataElementArr['7451'] = 'Membership category identification';
+    dataElementArr['7452'] = 'Membership status';
+    dataElementArr['7453'] = 'Membership status, coded';
+    dataElementArr['7455'] = 'Membership level qualifier';
+    dataElementArr['7456'] = 'Membership level';
+    dataElementArr['7457'] = 'Membership level identification';
+    dataElementArr['7491'] = 'Type of inventory affected, coded';
+    dataElementArr['7493'] = 'Damage details qualifier';
+    dataElementArr['7495'] = 'Identification qualifier';
+    dataElementArr['7497'] = 'Component function qualifier';
+    dataElementArr['7500'] = 'Type of damage';
+    dataElementArr['7501'] = 'Type of damage, coded';
+    dataElementArr['7502'] = 'Damage area';
+    dataElementArr['7503'] = 'Damage area identification';
+    dataElementArr['7504'] = 'Type of unit/component';
+    dataElementArr['7505'] = 'Type of unit/component, coded';
+    dataElementArr['7506'] = 'Component material';
+    dataElementArr['7507'] = 'Component material, coded';
+    dataElementArr['7508'] = 'Damage severity';
+    dataElementArr['7509'] = 'Damage severity, coded';
+    dataElementArr['7511'] = 'Type of marking, coded';
+    dataElementArr['7512'] = 'Structure component identifier';
+    dataElementArr['8022'] = 'Freight and charges';
+    dataElementArr['8023'] = 'Freight and charges identification';
+    dataElementArr['8028'] = 'Conveyance reference number';
+    dataElementArr['8051'] = 'Transport stage qualifier';
+    dataElementArr['8053'] = 'Equipment qualifier';
+    dataElementArr['8066'] = 'Mode of transport';
+    dataElementArr['8067'] = 'Mode of transport, coded';
+    dataElementArr['8077'] = 'Equipment supplier, coded';
+    dataElementArr['8078'] = 'Hazard substance/item/page number';
+    dataElementArr['8092'] = 'Hazard code version number';
+    dataElementArr['8101'] = 'Transit direction, coded';
+    dataElementArr['8126'] = 'Trem card number';
+    dataElementArr['8154'] = 'Equipment size and type';
+    dataElementArr['8155'] = 'Equipment size and type identification';
+    dataElementArr['8158'] = 'Hazard identification number, upper part';
+    dataElementArr['8169'] = 'Full/empty indicator, coded';
+    dataElementArr['8178'] = 'Type of means of transport';
+    dataElementArr['8179'] = 'Type of means of transport identification';
+    dataElementArr['8186'] = 'Substance identification number, lower part';
+    dataElementArr['8211'] = 'Permission for transport, coded';
+    dataElementArr['8212'] = 'Id. of the means of transport';
+    dataElementArr['8213'] = 'Id. of means of transport identification';
+    dataElementArr['8246'] = 'Dangerous goods label marking';
+    dataElementArr['8249'] = 'Equipment status, coded';
+    dataElementArr['8255'] = 'Packing instruction, coded';
+    dataElementArr['8260'] = 'Equipment identification number';
+    dataElementArr['8273'] = 'Dangerous goods regulations, coded';
+    dataElementArr['8275'] = 'Container/package status, coded';
+    dataElementArr['8281'] = 'Transport ownership, coded';
+    dataElementArr['8323'] = 'Transport movement, coded';
+    dataElementArr['8325'] = 'Category of means of transport, coded';
+    dataElementArr['8332'] = 'Equipment plan';
+    dataElementArr['8334'] = 'Movement type';
+    dataElementArr['8335'] = 'Movement type, coded';
+    dataElementArr['8339'] = 'Packing group, coded';
+    dataElementArr['8341'] = 'Haulage arrangements, coded';
+    dataElementArr['8351'] = 'Hazard code identification';
+    dataElementArr['8364'] = 'EMS number';
+    dataElementArr['8393'] = 'Returnable package load contents, coded';
+    dataElementArr['8395'] = 'Returnable package freight payment responsibility, coded';
+    dataElementArr['8410'] = 'MFAG';
+    dataElementArr['8453'] = 'Nationality of means of transport, coded';
+    dataElementArr['8457'] = 'Excess transportation reason, coded';
+    dataElementArr['8459'] = 'Excess transportation responsibility, coded';
+    dataElementArr['9003'] = 'Employment qualifier';
+    dataElementArr['9004'] = 'Employment category';
+    dataElementArr['9005'] = 'Employment category, coded';
+    dataElementArr['9006'] = 'Qualification classification';
+    dataElementArr['9007'] = 'Qualification classification, coded';
+    dataElementArr['9008'] = 'Occupation';
+    dataElementArr['9009'] = 'Occupation, coded';
+    dataElementArr['9010'] = 'Status event';
+    dataElementArr['9011'] = 'Status event, coded';
+    dataElementArr['9012'] = 'Status reason';
+    dataElementArr['9013'] = 'Status reason, coded';
+    dataElementArr['9015'] = 'Status type, coded';
+    dataElementArr['9017'] = 'Attribute function qualifier';
+    dataElementArr['9018'] = 'Attribute';
+    dataElementArr['9019'] = 'Attribute, coded';
+    dataElementArr['9021'] = 'Attribute type, coded';
+    dataElementArr['9035'] = 'Qualification area, coded';
+    dataElementArr['9141'] = 'Relationship qualifier';
+    dataElementArr['9142'] = 'Relationship';
+    dataElementArr['9143'] = 'Relationship, coded';
+    dataElementArr['9146'] = 'Composite data element tag';
+    dataElementArr['9148'] = 'Directory status';
+    dataElementArr['9150'] = 'Simple data element tag';
+    dataElementArr['9153'] = 'Simple data element character representation, coded';
+    dataElementArr['9155'] = 'Simple data element length type, coded';
+    dataElementArr['9156'] = 'Simple data element maximum length';
+    dataElementArr['9158'] = 'Simple data element minimum length';
+    dataElementArr['9161'] = 'Code set indicator, coded';
+    dataElementArr['9162'] = 'Data element tag';
+    dataElementArr['9164'] = 'Group identification';
+    dataElementArr['9166'] = 'Segment tag';
+    dataElementArr['9213'] = 'Type of duty regime, coded';
+    dataElementArr['9280'] = 'Validation result';
+    dataElementArr['9282'] = 'Validation key identification';
+    dataElementArr['9302'] = 'Sealing party';
+    dataElementArr['9303'] = 'Sealing party, coded';
+    dataElementArr['9308'] = 'Seal number';
+    dataElementArr['9321'] = 'Application error identification';
+    dataElementArr['9353'] = 'Government procedure, coded';
+    dataElementArr['9411'] = 'Government involvement, coded';
+    dataElementArr['9415'] = 'Government agency, coded';
+    dataElementArr['9417'] = 'Government action, coded';
+    dataElementArr['9419'] = 'Service layer, coded';
+    dataElementArr['9421'] = 'Stages qualifier';
+    dataElementArr['9424'] = 'Array cell information';
+    dataElementArr['9426'] = 'Code value';
+    dataElementArr['9428'] = 'Array structure identifier';
+    dataElementArr['9430'] = 'Footnote set identifier';
+    dataElementArr['9432'] = 'Footnote identifier';
+    dataElementArr['9434'] = 'Code name';
+
+    dataElementArr['C002'] = 'Document/message name';
+    dataElementArr['C040'] = 'Carrier';
+    dataElementArr['C042'] = 'Nationality details';
+    dataElementArr['C045'] = 'Bill level identification';
+    dataElementArr['C049'] = 'Remuneration type identification';
+    dataElementArr['C056'] = 'Department or employee details';
+    dataElementArr['C058'] = 'Name and address';
+    dataElementArr['C059'] = 'Street';
+    dataElementArr['C076'] = 'Communication contact';
+    dataElementArr['C077'] = 'File identification';
+    dataElementArr['C078'] = 'Account identification';
+    dataElementArr['C079'] = 'Computer environment identification';
+    dataElementArr['C080'] = 'Party name';
+    dataElementArr['C082'] = 'Party identification details';
+    dataElementArr['C085'] = 'Marital status details';
+    dataElementArr['C088'] = 'Institution identification';
+    dataElementArr['C090'] = 'Address details';
+    dataElementArr['C099'] = 'File details';
+    dataElementArr['C100'] = 'Terms of delivery or transport';
+    dataElementArr['C101'] = 'Religion details';
+    dataElementArr['C107'] = 'Text reference';
+    dataElementArr['C108'] = 'Text literal';
+    dataElementArr['C110'] = 'Payment terms';
+    dataElementArr['C112'] = 'Terms/time information';
+    dataElementArr['C128'] = 'Rate details';
+    dataElementArr['C138'] = 'Price multiplier information';
+    dataElementArr['C174'] = 'Value/range';
+    dataElementArr['C186'] = 'Quantity details';
+    dataElementArr['C200'] = 'Charge';
+    dataElementArr['C202'] = 'Package type';
+    dataElementArr['C203'] = 'Rate/tariff class';
+    dataElementArr['C205'] = 'Hazard code';
+    dataElementArr['C206'] = 'Identification number';
+    dataElementArr['C208'] = 'Identity number range';
+    dataElementArr['C210'] = 'Marks & labels';
+    dataElementArr['C211'] = 'Dimensions';
+    dataElementArr['C212'] = 'Item number identification';
+    dataElementArr['C213'] = 'Number and type of packages';
+    dataElementArr['C214'] = 'Special services identification';
+    dataElementArr['C215'] = 'Seal issuer';
+    dataElementArr['C218'] = 'Hazardous material';
+    dataElementArr['C219'] = 'Movement type';
+    dataElementArr['C220'] = 'Mode of transport';
+    dataElementArr['C222'] = 'Transport identification';
+    dataElementArr['C223'] = 'Dangerous goods shipment flashpoint';
+    dataElementArr['C224'] = 'Equipment size and type';
+    dataElementArr['C228'] = 'Transport means';
+    dataElementArr['C229'] = 'Charge category';
+    dataElementArr['C231'] = 'Method of payment';
+    dataElementArr['C232'] = 'Government action';
+    dataElementArr['C233'] = 'Service';
+    dataElementArr['C234'] = 'Undg information';
+    dataElementArr['C235'] = 'Hazard identification';
+    dataElementArr['C236'] = 'Dangerous goods label';
+    dataElementArr['C237'] = 'Equipment identification';
+    dataElementArr['C239'] = 'Temperature setting';
+    dataElementArr['C240'] = 'Product characteristic';
+    dataElementArr['C241'] = 'Duty/tax/fee type';
+    dataElementArr['C242'] = 'Process type and description';
+    dataElementArr['C243'] = 'Duty/tax/fee detail';
+    dataElementArr['C244'] = 'Test method';
+    dataElementArr['C246'] = 'Customs identity codes';
+    dataElementArr['C270'] = 'Control';
+    dataElementArr['C273'] = 'Item description';
+    dataElementArr['C279'] = 'Quantity difference information';
+    dataElementArr['C280'] = 'Range';
+    dataElementArr['C286'] = 'Sequence information';
+    dataElementArr['C288'] = 'Product group';
+    dataElementArr['C292'] = 'Price change information';
+    dataElementArr['C329'] = 'Pattern description';
+    dataElementArr['C330'] = 'Insurance cover type';
+    dataElementArr['C331'] = 'Insurance cover details';
+    dataElementArr['C332'] = 'Sales channel identification';
+    dataElementArr['C333'] = 'Information request';
+    dataElementArr['C401'] = 'Excess transportation information';
+    dataElementArr['C402'] = 'Package type identification';
+    dataElementArr['C501'] = 'Percentage details';
+    dataElementArr['C502'] = 'Measurement details';
+    dataElementArr['C503'] = 'Document/message details';
+    dataElementArr['C504'] = 'Currency details';
+    dataElementArr['C506'] = 'Reference';
+    dataElementArr['C507'] = 'Date/time/period';
+    dataElementArr['C508'] = 'Language details';
+    dataElementArr['C509'] = 'Price information';
+    dataElementArr['C512'] = 'Size details';
+    dataElementArr['C514'] = 'Sample location details';
+    dataElementArr['C515'] = 'Test reason';
+    dataElementArr['C516'] = 'Monetary amount';
+    dataElementArr['C517'] = 'Location identification';
+    dataElementArr['C519'] = 'Related location one identification';
+    dataElementArr['C521'] = 'Business function';
+    dataElementArr['C522'] = 'Instruction';
+    dataElementArr['C523'] = 'Number of unit details';
+    dataElementArr['C524'] = 'Handling instructions';
+    dataElementArr['C526'] = 'Frequency details';
+    dataElementArr['C527'] = 'Statistical details';
+    dataElementArr['C528'] = 'Commodity/rate detail';
+    dataElementArr['C529'] = 'Processing indicator';
+    dataElementArr['C531'] = 'Packaging details';
+    dataElementArr['C532'] = 'Returnable package details';
+    dataElementArr['C533'] = 'Duty/tax/fee account detail';
+    dataElementArr['C534'] = 'Payment instruction details';
+    dataElementArr['C536'] = 'Contract and carriage condition';
+    dataElementArr['C537'] = 'Transport priority';
+    dataElementArr['C543'] = 'Agreement type identification';
+    dataElementArr['C545'] = 'Index identification';
+    dataElementArr['C546'] = 'Index value';
+    dataElementArr['C549'] = 'Monetary function';
+    dataElementArr['C550'] = 'Requirement/condition identification';
+    dataElementArr['C551'] = 'Bank operation';
+    dataElementArr['C552'] = 'Allowance/charge information';
+    dataElementArr['C553'] = 'Related location two identification';
+    dataElementArr['C554'] = 'Rate/tariff class detail';
+    dataElementArr['C555'] = 'Status event';
+    dataElementArr['C556'] = 'Status reason';
+    dataElementArr['C585'] = 'Priority details';
+    dataElementArr['C601'] = 'Status type';
+    dataElementArr['C701'] = 'Error point details';
+    dataElementArr['C702'] = 'Code set identification';
+    dataElementArr['C703'] = 'Nature of cargo';
+    dataElementArr['C709'] = 'Message identifier';
+    dataElementArr['C770'] = 'Array cell details';
+    dataElementArr['C778'] = 'Position identification';
+    dataElementArr['C779'] = 'Array structure identification';
+    dataElementArr['C780'] = 'Value list identification';
+    dataElementArr['C782'] = 'Data set identification';
+    dataElementArr['C783'] = 'Footnote set identification';
+    dataElementArr['C784'] = 'Footnote identification';
+    dataElementArr['C785'] = 'Statistical concept identification';
+    dataElementArr['C786'] = 'Structure component identification';
+    dataElementArr['C814'] = 'Safety section';
+    dataElementArr['C815'] = 'Additional safety information';
+    dataElementArr['C816'] = 'Name component details';
+    dataElementArr['C817'] = 'Address usage';
+    dataElementArr['C818'] = 'Person inherited characteristic details';
+    dataElementArr['C819'] = 'Country sub-entity details';
+    dataElementArr['C821'] = 'Type of damage';
+    dataElementArr['C822'] = 'Damage area';
+    dataElementArr['C823'] = 'Type of unit/component';
+    dataElementArr['C824'] = 'Component material';
+    dataElementArr['C825'] = 'Damage severity';
+    dataElementArr['C826'] = 'Action';
+    dataElementArr['C827'] = 'Type of marking';
+    dataElementArr['C829'] = 'Sub-line information';
+    dataElementArr['C849'] = 'Parties to instruction';
+    dataElementArr['C850'] = 'Status of instruction';
+    dataElementArr['C878'] = 'Charge/allowance account';
+    dataElementArr['C889'] = 'Characteristic value';
+    dataElementArr['C901'] = 'Application error detail';
+    dataElementArr['C941'] = 'Relationship';
+    dataElementArr['C942'] = 'Membership category';
+    dataElementArr['C944'] = 'Membership status';
+    dataElementArr['C945'] = 'Membership level';
+    dataElementArr['C948'] = 'Employment category';
+    dataElementArr['C950'] = 'Qualification classification';
+    dataElementArr['C951'] = 'Occupation';
+    dataElementArr['C953'] = 'Contribution type';
+    dataElementArr['C955'] = 'Attribute type';
+    dataElementArr['C956'] = 'Attribute details';
+    dataElementArr['C960'] = 'Reason for change';
+
+    dataElementArr['S009'] = 'MESSAGE IDENTIFIER';
+    dataElementArr['S010'] = 'STATUS OF THE TRANSFER';
+    dataElementArr['S001'] = 'SYNTAX IDENTIFIER';
+    dataElementArr['S002'] = 'INTERCHANGE SENDER';
+    dataElementArr['S003'] = 'INTERCHANGE RECIPIENT';
+    dataElementArr['S004'] = 'DATE/TIME OF PREPARATION';
+    dataElementArr['S005'] = 'RECIPIENT\'S REFERENCE, PASSWORD';
+
+    var ediPatternArr = new Array();
+    ediPatternArr['ADR'] = '';
+    ediPatternArr['AGR'] = '';
+    ediPatternArr['AJT'] = '';
+    ediPatternArr['ALC'] = '';
+    ediPatternArr['ALI'] = '';
+    ediPatternArr['APR'] = '';
+    ediPatternArr['ARD'] = '';
+    ediPatternArr['ARR'] = '';
+    ediPatternArr['ASI'] = '';
+    ediPatternArr['ATT'] = '';
+    ediPatternArr['AUT'] = '';
+    ediPatternArr['BGM'] = 'BGM+C002:1001:1131:3055:1000+1004+1225+4343';
+    ediPatternArr['BII'] = '';
+    ediPatternArr['BUS'] = '';
+    ediPatternArr['CAV'] = '';
+    ediPatternArr['CCD'] = '';
+    ediPatternArr['CCI'] = '';
+    ediPatternArr['CDS'] = '';
+    ediPatternArr['CDV'] = '';
+    ediPatternArr['CED'] = '';
+    ediPatternArr['CMP'] = '';
+    ediPatternArr['CNI'] = '';
+    ediPatternArr['CNT'] = 'CNT+C270:6069:6066:6411';
+    ediPatternArr['COD'] = '';
+    ediPatternArr['COM'] = '';
+    ediPatternArr['COT'] = '';
+    ediPatternArr['CPI'] = '';
+    ediPatternArr['CPS'] = '';
+    ediPatternArr['CST'] = '';
+    ediPatternArr['CTA'] = '';
+    ediPatternArr['CUX'] = '';
+    ediPatternArr['DAM'] = 'DAM+7493+C821:7501:1131:3055:7500+C822:7503:1131:3055:7502+C825:7509:1131:3055:7508+C826:1229:1131:3055:1228';
+    ediPatternArr['DGS'] = 'DGS+8273+C205:8351:8078:8092+C234:7124:7088+C223:7106:6411:8339:8364:8410:8126+C235:8158:8186+C236:8246:8246:8246:8255:8325:8211';
+    ediPatternArr['DII'] = '';
+    ediPatternArr['DIM'] = 'DIM+6145+C211:6411:6168:6140:6008';
+    ediPatternArr['DLI'] = '';
+    ediPatternArr['DLM'] = '';
+    ediPatternArr['DMS'] = '';
+    ediPatternArr['DOC'] = '';
+    ediPatternArr['DSI'] = '';
+    ediPatternArr['DTM'] = 'DTM+C507:2005:2380:2379';
+    ediPatternArr['EFI'] = '';
+    ediPatternArr['ELM'] = '';
+    ediPatternArr['ELU'] = '';
+    ediPatternArr['EMP'] = '';
+    ediPatternArr['EQA'] = '';
+    ediPatternArr['EQD'] = 'EQD+8053+C237:8260:1131:3055:3207+C224:8155:1131:3055:8154+8077+8249+8169';
+    ediPatternArr['EQN'] = '';
+    ediPatternArr['ERC'] = '';
+    ediPatternArr['ERP'] = '';
+    ediPatternArr['FCA'] = '';
+    ediPatternArr['FII'] = '';
+    ediPatternArr['FNS'] = '';
+    ediPatternArr['FNT'] = '';
+    ediPatternArr['FTX'] = '';
+    ediPatternArr['GDS'] = '';
+    ediPatternArr['GID'] = 'GID+1496+C213:7224:7065:1131:3055:7064+C213:7224:7065:1131:3055:7064+C213:7224:7065:1131:3055:7064';
+    ediPatternArr['GIN'] = '';
+    ediPatternArr['GIR'] = '';
+    ediPatternArr['GIS'] = '';
+    ediPatternArr['GOR'] = '';
+    ediPatternArr['GRU'] = '';
+    ediPatternArr['HAN'] = '';
+    ediPatternArr['ICD'] = '';
+    ediPatternArr['IDE'] = '';
+    ediPatternArr['IHC'] = '';
+    ediPatternArr['IMD'] = '';
+    ediPatternArr['IND'] = '';
+    ediPatternArr['INP'] = '';
+    ediPatternArr['INV'] = '';
+    ediPatternArr['IRQ'] = '';
+    ediPatternArr['LAN'] = '';
+    ediPatternArr['LIN'] = '';
+    ediPatternArr['LOC'] = 'LOC+3227+C517:3225:1131:3055:3224+C519:3223:1131:3055:3222+C553:3233:1131:3055:3232:5479';
+    ediPatternArr['MEA'] = 'MEA+6311+C502:6313:6321:6155:6154+C174:6411:6314:6162:6152:6432+7383';
+    ediPatternArr['MEM'] = '';
+    ediPatternArr['MKS'] = '';
+    ediPatternArr['MOA'] = '';
+    ediPatternArr['MSG'] = '';
+    ediPatternArr['NAD'] = 'NAD+3035+C082:3039:1131:3055+C058:3124:3124:3124:3124:3124+C080:3036:3036:3036:3036:3036:3045+C059:3042:3042:3042+3164+3229+3251+3207';
+    ediPatternArr['NAT'] = '';
+    ediPatternArr['PAC'] = '';
+    ediPatternArr['PAI'] = '';
+    ediPatternArr['PAT'] = '';
+    ediPatternArr['PCD'] = '';
+    ediPatternArr['PCI'] = '';
+    ediPatternArr['PDI'] = '';
+    ediPatternArr['PGI'] = '';
+    ediPatternArr['PIA'] = '';
+    ediPatternArr['PIT'] = '';
+    ediPatternArr['PNA'] = '';
+    ediPatternArr['PRC'] = '';
+    ediPatternArr['PRI'] = '';
+    ediPatternArr['PSD'] = '';
+    ediPatternArr['PTY'] = '';
+    ediPatternArr['QTY'] = '';
+    ediPatternArr['QVR'] = '';
+    ediPatternArr['RCS'] = '';
+    ediPatternArr['REL'] = '';
+    ediPatternArr['RFF'] = 'RFF+C506:1153:1154:1156:4000';
+    ediPatternArr['RNG'] = '';
+    ediPatternArr['RTE'] = '';
+    ediPatternArr['SAL'] = '';
+    ediPatternArr['SCC'] = '';
+    ediPatternArr['SCD'] = '';
+    ediPatternArr['SEG'] = '';
+    ediPatternArr['SEL'] = 'SEL+9308+C215:9303:1131:3055:9302+4517';
+    ediPatternArr['SEQ'] = '';
+    ediPatternArr['SFI'] = '';
+    ediPatternArr['SGP'] = 'SGP+C237:8260:1131:3055:3207+7224';
+    ediPatternArr['SGU'] = '';
+    ediPatternArr['SPS'] = '';
+    ediPatternArr['STA'] = '';
+    ediPatternArr['STC'] = '';
+    ediPatternArr['STG'] = '';
+    ediPatternArr['STS'] = '';
+    ediPatternArr['TAX'] = '';
+    ediPatternArr['TCC'] = '';
+    ediPatternArr['TDT'] = 'TDT+8051+8028+C220:8067:8066+C228:8179:8178+C040:3127:1131:3055:3128+8101+C401:8457:8459:7130+C222:8213:1131:3055:8212:8453+8281';
+    ediPatternArr['TEM'] = '';
+    ediPatternArr['TMD'] = 'TMD+C219:8335:8334+8332+8341';
+    ediPatternArr['TMP'] = '';
+    ediPatternArr['TOD'] = '';
+    ediPatternArr['TPL'] = '';
+    ediPatternArr['TSR'] = '';
+    ediPatternArr['UNB'] = 'UNB+S001:0001:0002+S002:0004:0007:0008+S003:0010:0007:0014+S004:0017:0019+0020+S005:0022:0025+0026+0029+0031+0032+0035';
+    ediPatternArr['UNH'] = 'UNH+0062+S009:0065:0052:0054:0051:0057+0068+S010:0070:0073';
+    ediPatternArr['UNT'] = 'UNT+0074+0062';
+    ediPatternArr['UNZ'] = 'UNZ+0036+0020';
+    ediPatternArr['VLI'] = '';
+
+    function groupSplitter(tagArray)
+    {
+        var strTagArray = tagArray.join('-');
+
+        var tagOccurrenceTable  = new Array();
+
+        var occurrenceStatisticTable = new Array();
+
+        var mostOccurrenceCount = 0;
+
+        var firstTagRepeated;
+
+        var htmlResult = '';
+
+        for (t in tagArray)
+        {
+            if(tagOccurrenceTable[tagArray[t]] == undefined)
+            {
+                tagOccurrenceTable[tagArray[t]] = 1;
+            }
+            else
+            {
+                tagOccurrenceTable[tagArray[t]]++;
+            }
+        }
+
+        for (s in tagOccurrenceTable)
+        {
+            if(occurrenceStatisticTable[tagOccurrenceTable[s]] == undefined)
+            {
+                occurrenceStatisticTable[tagOccurrenceTable[s]] = 1;
+            }
+            else
+            {
+                occurrenceStatisticTable[tagOccurrenceTable[s]]++;
+            }
+        }
+
+        for (o in occurrenceStatisticTable)
+        {
+            if(o > 1 && occurrenceStatisticTable[o] > 1 && occurrenceStatisticTable[o] > mostOccurrenceCount)
+            {
+                mostOccurrenceCount = occurrenceStatisticTable[o];
+            }
+        }
+
+        if(mostOccurrenceCount > 1)
+        {
+            for (t in tagOccurrenceTable)
+            {
+                if(tagOccurrenceTable[t] == occurrenceStatisticTable.indexOf(mostOccurrenceCount))
+                {
+                    firstTagRepeated = t;
+                    break;
+                }
+            }
+
+            for(var x = tagArray.length - 1; x >= 0; x--)
+            {
+                if(tagOccurrenceTable[tagArray[x]] > 1)
+                {
+                    break;
+                }
+
+                lastTagRepeated = tagArray[x];
+            }
+
+            strTagArray =  strTagArray.replace(new RegExp('-' + firstTagRepeated, 'g'), '##' + firstTagRepeated);
+        }
+
+        for(t in tagOccurrenceTable)
+        {
+            if(tagOccurrenceTable[t] == 1)
+            {
+                strTagArray =  strTagArray.replace('-' + t + '-', '##' + t + '##');
+                strTagArray =  strTagArray.replace(t + '-', t + '##');
+                strTagArray =  strTagArray.replace('-' + t , '##' + t);
+            }
+        }
+
+        //strTagArray =  strTagArray.replace(new RegExp('####', 'g'), '##');
+        strTagArray = strTagArray.split('##');
+
+        for (s in strTagArray) 
+        {
+            htmlResult = htmlResult + "<option>"+ strTagArray[s] + "</option>";
+        }
+
+        return htmlResult;
+    }
+
+    function readEDISegment(ediSegment)
+    {
+        var parseTable = new Array();
+
+        var ediTag = ediSegment.substr(0, 3);
+
+        var ediPattern = ediPatternArr[ediTag];
+
+        if(ediPattern=='' || ediPattern == null)
+        {
+            parseTable[parseTable.length] = [-1, "<b>Tag "+ediTag+" was not defined !</b>"];
+            return parseTable;
+        }
+
+        var patternElementArray = ediPattern.split('+');
+
+        var dataElementArray = ediSegment.split('+');
+
+        if(dataElementArray.length < 2)
+        {
+            parseTable[parseTable.length] = [-1, "<b>Syntax error</b>"];
+            return parseTable;
+        }
+
+        parseTable[parseTable.length] = [dataElementArray[0], ''];
+
+        for(var i = 1; i < dataElementArray.length; i++)
+        {
+            if(patternElementArray[i] != undefined)
+            {
+                if(patternElementArray[i].indexOf(':') == -1)
+                {
+                    parseTable[parseTable.length] = [patternElementArray[i], dataElementArray[i], 1];
+                }
+                else
+                {
+                    var patternSubElementArray = patternElementArray[i].split(':');
+
+                    var dataSubElementArray = dataElementArray[i].split(':');
+
+                    parseTable[parseTable.length] = [patternSubElementArray[0], ''];
+
+                    for(var j = 0; j < dataSubElementArray.length; j++)
+                    {
+                        if(patternSubElementArray[j + 1] != undefined)
+                        {
+                            parseTable[parseTable.length] = [patternSubElementArray[j + 1], dataSubElementArray[j]];
+                        }
+                        else
+                        {
+                            parseTable[parseTable.length] = [-1, 'Wrong position of the value "<b>'+dataSubElementArray[j]+'"</b>'];
+                            return parseTable;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                parseTable[parseTable.length] = [-1, 'Wrong position of the value "<b>'+dataElementArray[i]+'"</b>'];
+                return parseTable;
+            }
+        }
+
+        return parseTable;
+    }
+
+    function make_HTML_of_Segment(parseTable, compareTable)
+    {
+        var comparingOrder = false;
+
+        var htmlResult = "<table class='table'><thead><th>#</th><th>D.E. Code</th><th>D.E. Name</th><th>Value</th></thead>";
+
+        if(parseTable[0] != undefined && parseTable[0][0] != -1)
+        {
+            htmlResult +="<tr><td>1</td><td><a href=http://www.truugo.com/edifact/d95b/"+parseTable[0][0]+"/ target=_blank>"+parseTable[0][0]+"</a></td><td>" + dataElementArr[parseTable[0][0]] + "</td><td></td></tr>";
+        }
+        else
+        {
+            htmlResult += "<tr><td>1</td><td>Error</td><td colspan=2>"+parseTable[0][1]+"</td></tr>"
+        }
+
+        if(compareTable!= undefined && compareTable[0][0] == parseTable[0][0])
+        {
+            comparingOrder = true;
+        }
+
+        var count = 2;
+
+        for(var i = 1; i < parseTable.length; i++)
+        {
+            if(isNaN(parseTable[i][0]))
+            {
+                htmlResult += "<tr><td></td><td><a href=http://www.unece.org/trade/untdid/d95b/trcd/trcd"
+                +parseTable[i][0].toLocaleLowerCase()+".htm target=_blank>"
+                +parseTable[i][0]+"</a></td><td>"
+                +dataElementArr[parseTable[i][0]].toUpperCase()+"</td><td></td></tr>"
+            }
+            else if(parseTable[i][0] != -1)
+            {
+                if(comparingOrder)
+                {
+                    if(compareTable[i] == undefined)
+                    {
+                        htmlResult += "<tr style='background-color: red'><td>"+
+                        count+"</td><td><a href=http://www.unece.org/trade/untdid/d95b/uncl/uncl"
+                        +parseTable[i][0]+".htm target=_blank>"
+                        +(parseTable[i][2]!=undefined?parseTable[i][0]:'.....'+parseTable[i][0])+"</a></td><td>"
+                        +(parseTable[i][2]!=undefined?dataElementArr[parseTable[i][0]].toUpperCase():dataElementArr[parseTable[i][0]])+"</td><td>"
+                        +parseTable[i][1]+"</td></tr>";
+                        count++;
+                    }
+                    else if(parseTable[i][0] != compareTable[i][0])
+                    {
+                        htmlResult += "<tr style='background-color: gray'><td>"+
+                        count+"</td><td><a href=http://www.unece.org/trade/untdid/d95b/uncl/uncl"
+                        +parseTable[i][0]+".htm target=_blank>"
+                        +(parseTable[i][2]!=undefined?parseTable[i][0]:'.....'+parseTable[i][0])+"</a></td><td>"
+                        +(parseTable[i][2]!=undefined?dataElementArr[parseTable[i][0]].toUpperCase():dataElementArr[parseTable[i][0]])+"</td><td>"
+                        +parseTable[i][1]+"</td></tr>";
+                        count++;
+                    }
+                    else if(parseTable[i][1] != compareTable[i][1])
+                    {
+                        htmlResult += "<tr><td>"+
+                        count+"</td><td><a href=http://www.unece.org/trade/untdid/d95b/uncl/uncl"
+                        +parseTable[i][0]+".htm target=_blank>"
+                        +(parseTable[i][2]!=undefined?parseTable[i][0]:'.....'+parseTable[i][0])+"</a></td><td>"
+                        +(parseTable[i][2]!=undefined?dataElementArr[parseTable[i][0]].toUpperCase():dataElementArr[parseTable[i][0]])+"</td><td style='font-weight: bold; color: red'>"
+                        +parseTable[i][1]+"</td></tr>";
+                        count++;
+                    }
+                    else
+                    {
+                        htmlResult += "<tr><td>"+
+                        count+"</td><td><a href=http://www.unece.org/trade/untdid/d95b/uncl/uncl"
+                        +parseTable[i][0]+".htm target=_blank>"
+                        +(parseTable[i][2]!=undefined?parseTable[i][0]:'.....'+parseTable[i][0])+"</a></td><td>"
+                        +(parseTable[i][2]!=undefined?dataElementArr[parseTable[i][0]].toUpperCase():dataElementArr[parseTable[i][0]])+"</td><td>"
+                        +parseTable[i][1]+"</td></tr>";
+                        count++;
+                    }
+                }
+                else
+                {
+                    htmlResult += "<tr><td>"+
+                    count+"</td><td><a href=http://www.unece.org/trade/untdid/d95b/uncl/uncl"
+                    +parseTable[i][0]+".htm target=_blank>"
+                    +(parseTable[i][2]!=undefined?parseTable[i][0]:'.....'+parseTable[i][0])+"</a></td><td>"
+                    +(parseTable[i][2]!=undefined?dataElementArr[parseTable[i][0]].toUpperCase():dataElementArr[parseTable[i][0]])+"</td><td>"
+                    +parseTable[i][1]+"</td></tr>";
+                    count++;
+                }
+            }
+            else
+            {
+                htmlResult += "<tr><td>"+
+                count+"</td><td>Error</td><td colspan=2>"
+                +parseTable[i][1]+"</td></tr>"
+            }
+        }
+
+        htmlResult +="</table>";
+
+        return htmlResult;
+    }
+
+    </script>
+
+</head>
+
+<body>
+
+    <header style="margin-bottom: 10px; background-color: #330066;">
+        <div class="container">
+        </span><h4 style="color: #fff">EDI Reading Helper beta - baron@gridbon.com</h3>
+    </div>
+</header>
+
+<div class="container"><!--main container begining-->
+
+  <div class="row">
+
+     <div class="span6" id="left_wrapper">
+
+        <ul class="nav nav-tabs" id="left_EDI_tab" style="margin-bottom: 10px">
+          <li class="active"><a href="#left_EDI_Input" data-toggle="tab">EDI Input</a></li>
+          <li><a href="#left_EDI_Structure" data-toggle="tab">Structure</a></li>
+          <li><a href="#left_EDI_Segment_DTL" data-toggle="tab">Segment Details</a></li>
+      </ul>
+
+      <div class="tab-content">
+        <div class="tab-pane active" id="left_EDI_Input">
+            <textarea rows="19" id="left_EDI_Input_Text" style="width: 95%"></textarea>
+            <div>
+                <button class="btn" data-dismiss="modal" aria-hidden="true" id="left_EDI_Input_Clear" style="height: 33px">Clear</button>
+                <input class="btn" type="file" id="left_file_input" name="left_files[]" multiple style="width: 80%; height: 23px"/>
+                <!--button class="btn btn-primary" id="left_EDI_Input_Submit">Submit</button-->
+            </div>
+        </div>
+        <div class="tab-pane" id="left_EDI_Structure">
+            <select size=22 id="left_EDI_Structure_Select" style="width: 100%">
+            </select>
+        </div>
+        <div class="tab-pane" id="left_EDI_Segment_DTL">
+            <select size=10 id="left_EDI_Segment_DTL_Select" style="width: 100%">
+            </select>
+            <div id="left_EDI_Segment_DTL_Holder"></div>
+        </div>
+    </div>
+
+</div><!--left wrapper ending-->
+
+<div class="span6" id="right_wrapper">
+
+    <ul class="nav nav-tabs" id="right_EDI_tab" style="margin-bottom: 10px">
+      <li class="active"><a href="#right_EDI_Input" data-toggle="tab">EDI Input</a></li>
+      <li><a href="#right_EDI_Structure" data-toggle="tab">Structure</a></li>
+      <li><a href="#right_EDI_Segment_DTL" data-toggle="tab">Segment Details</a></li>
+  </ul>
+
+  <div class="tab-content">
+    <div class="tab-pane active" id="right_EDI_Input">
+        <textarea rows="19" id="right_EDI_Input_Text" style="width: 95%"></textarea>
+        <div>
+            <button class="btn" data-dismiss="modal" aria-hidden="true" id="right_EDI_Input_Clear" style="height: 33px">Clear</button>
+            <input class="btn" type="file" id="right_file_input" name="right_files[]" multiple style="width: 80%; height: 23px"/>
+            <!--button class="btn btn-primary" id="right_EDI_Input_Submit">Submit</button-->
+        </div>
+    </div>
+    <div class="tab-pane" id="right_EDI_Structure">
+        <select size=22 id="right_EDI_Structure_Select" style="width: 100%">
+        </select>
+    </div>
+    <div class="tab-pane" id="right_EDI_Segment_DTL">
+        <select size=10 id="right_EDI_Segment_DTL_Select" style="width: 100%">
+        </select>
+        <div id="right_EDI_Segment_DTL_Holder"></div>
+    </div>
+</div>
+</div><!--right wrapper ending-->
+
+</div>
+
+</div><!--main container ending-->
+
+    <!-- The javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    
+    <script src="http://getbootstrap.com/2.3.2/assets/js/jquery.js"></script>
+    <!--script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+    <script src="http://getbootstrap.com/2.3.2/assets/js/bootstrap-transition.js"></script>
+    <script src="http://getbootstrap.com/2.3.2/assets/js/bootstrap-alert.js"></script>
+    <script src="http://getbootstrap.com/2.3.2/assets/js/bootstrap-modal.js"></script>
+    <script src="http://getbootstrap.com/2.3.2/assets/js/bootstrap-dropdown.js"></script>
+    <script src="http://getbootstrap.com/2.3.2/assets/js/bootstrap-scrollspy.js"></script-->
+        <script src="http://getbootstrap.com/2.3.2/assets/js/bootstrap-tab.js"></script>
+    <!--script src="http://getbootstrap.com/2.3.2/assets/js/bootstrap-tooltip.js"></script>
+    <script src="http://getbootstrap.com/2.3.2/assets/js/bootstrap-popover.js"></script>
+    <script src="http://getbootstrap.com/2.3.2/assets/js/bootstrap-button.js"></script>
+    <script src="http://getbootstrap.com/2.3.2/assets/js/bootstrap-collapse.js"></script>
+    <script src="http://getbootstrap.com/2.3.2/assets/js/bootstrap-carousel.js"></script>
+    <script src="http://getbootstrap.com/2.3.2/assets/js/bootstrap-typeahead.js"></script>
+    <script src="http://getbootstrap.com/2.3.2/assets/js/bootstrap-affix.js"></script>
+    <script src="http://getbootstrap.com/2.3.2/assets/js/holder/holder.js"></script>
+    <script src="http://getbootstrap.com/2.3.2/assets/js/google-code-prettify/prettify.js"></script>
+    <script src="http://getbootstrap.com/2.3.2/assets/js/application.js"></script-->
+
+        <script type="text/javascript">
+
+        (function ($) {
+            'use strict';
+
+    /*
+    * Add integers, wrapping at 2^32. This uses 16-bit operations internally
+    * to work around bugs in some JS interpreters.
+    */
+    function safe_add(x, y) {
+        var lsw = (x & 0xFFFF) + (y & 0xFFFF),
+        msw = (x >> 16) + (y >> 16) + (lsw >> 16);
+        return (msw << 16) | (lsw & 0xFFFF);
+    }
+
+    /*
+    * Bitwise rotate a 32-bit number to the left.
+    */
+    function bit_rol(num, cnt) {
+        return (num << cnt) | (num >>> (32 - cnt));
+    }
+
+    /*
+    * These functions implement the four basic operations the algorithm uses.
+    */
+    function md5_cmn(q, a, b, x, s, t) {
+        return safe_add(bit_rol(safe_add(safe_add(a, q), safe_add(x, t)), s), b);
+    }
+    function md5_ff(a, b, c, d, x, s, t) {
+        return md5_cmn((b & c) | ((~b) & d), a, b, x, s, t);
+    }
+    function md5_gg(a, b, c, d, x, s, t) {
+        return md5_cmn((b & d) | (c & (~d)), a, b, x, s, t);
+    }
+    function md5_hh(a, b, c, d, x, s, t) {
+        return md5_cmn(b ^ c ^ d, a, b, x, s, t);
+    }
+    function md5_ii(a, b, c, d, x, s, t) {
+        return md5_cmn(c ^ (b | (~d)), a, b, x, s, t);
+    }
+
+    /*
+    * Calculate the MD5 of an array of little-endian words, and a bit length.
+    */
+    function binl_md5(x, len) {
+        /* append padding */
+        x[len >> 5] |= 0x80 << ((len) % 32);
+        x[(((len + 64) >>> 9) << 4) + 14] = len;
+
+        var i, olda, oldb, oldc, oldd,
+        a =  1732584193,
+        b = -271733879,
+        c = -1732584194,
+        d =  271733878;
+
+        for (i = 0; i < x.length; i += 16) {
+            olda = a;
+            oldb = b;
+            oldc = c;
+            oldd = d;
+
+            a = md5_ff(a, b, c, d, x[i],       7, -680876936);
+            d = md5_ff(d, a, b, c, x[i +  1], 12, -389564586);
+            c = md5_ff(c, d, a, b, x[i +  2], 17,  606105819);
+            b = md5_ff(b, c, d, a, x[i +  3], 22, -1044525330);
+            a = md5_ff(a, b, c, d, x[i +  4],  7, -176418897);
+            d = md5_ff(d, a, b, c, x[i +  5], 12,  1200080426);
+            c = md5_ff(c, d, a, b, x[i +  6], 17, -1473231341);
+            b = md5_ff(b, c, d, a, x[i +  7], 22, -45705983);
+            a = md5_ff(a, b, c, d, x[i +  8],  7,  1770035416);
+            d = md5_ff(d, a, b, c, x[i +  9], 12, -1958414417);
+            c = md5_ff(c, d, a, b, x[i + 10], 17, -42063);
+            b = md5_ff(b, c, d, a, x[i + 11], 22, -1990404162);
+            a = md5_ff(a, b, c, d, x[i + 12],  7,  1804603682);
+            d = md5_ff(d, a, b, c, x[i + 13], 12, -40341101);
+            c = md5_ff(c, d, a, b, x[i + 14], 17, -1502002290);
+            b = md5_ff(b, c, d, a, x[i + 15], 22,  1236535329);
+
+            a = md5_gg(a, b, c, d, x[i +  1],  5, -165796510);
+            d = md5_gg(d, a, b, c, x[i +  6],  9, -1069501632);
+            c = md5_gg(c, d, a, b, x[i + 11], 14,  643717713);
+            b = md5_gg(b, c, d, a, x[i],      20, -373897302);
+            a = md5_gg(a, b, c, d, x[i +  5],  5, -701558691);
+            d = md5_gg(d, a, b, c, x[i + 10],  9,  38016083);
+            c = md5_gg(c, d, a, b, x[i + 15], 14, -660478335);
+            b = md5_gg(b, c, d, a, x[i +  4], 20, -405537848);
+            a = md5_gg(a, b, c, d, x[i +  9],  5,  568446438);
+            d = md5_gg(d, a, b, c, x[i + 14],  9, -1019803690);
+            c = md5_gg(c, d, a, b, x[i +  3], 14, -187363961);
+            b = md5_gg(b, c, d, a, x[i +  8], 20,  1163531501);
+            a = md5_gg(a, b, c, d, x[i + 13],  5, -1444681467);
+            d = md5_gg(d, a, b, c, x[i +  2],  9, -51403784);
+            c = md5_gg(c, d, a, b, x[i +  7], 14,  1735328473);
+            b = md5_gg(b, c, d, a, x[i + 12], 20, -1926607734);
+
+            a = md5_hh(a, b, c, d, x[i +  5],  4, -378558);
+            d = md5_hh(d, a, b, c, x[i +  8], 11, -2022574463);
+            c = md5_hh(c, d, a, b, x[i + 11], 16,  1839030562);
+            b = md5_hh(b, c, d, a, x[i + 14], 23, -35309556);
+            a = md5_hh(a, b, c, d, x[i +  1],  4, -1530992060);
+            d = md5_hh(d, a, b, c, x[i +  4], 11,  1272893353);
+            c = md5_hh(c, d, a, b, x[i +  7], 16, -155497632);
+            b = md5_hh(b, c, d, a, x[i + 10], 23, -1094730640);
+            a = md5_hh(a, b, c, d, x[i + 13],  4,  681279174);
+            d = md5_hh(d, a, b, c, x[i],      11, -358537222);
+            c = md5_hh(c, d, a, b, x[i +  3], 16, -722521979);
+            b = md5_hh(b, c, d, a, x[i +  6], 23,  76029189);
+            a = md5_hh(a, b, c, d, x[i +  9],  4, -640364487);
+            d = md5_hh(d, a, b, c, x[i + 12], 11, -421815835);
+            c = md5_hh(c, d, a, b, x[i + 15], 16,  530742520);
+            b = md5_hh(b, c, d, a, x[i +  2], 23, -995338651);
+
+            a = md5_ii(a, b, c, d, x[i],       6, -198630844);
+            d = md5_ii(d, a, b, c, x[i +  7], 10,  1126891415);
+            c = md5_ii(c, d, a, b, x[i + 14], 15, -1416354905);
+            b = md5_ii(b, c, d, a, x[i +  5], 21, -57434055);
+            a = md5_ii(a, b, c, d, x[i + 12],  6,  1700485571);
+            d = md5_ii(d, a, b, c, x[i +  3], 10, -1894986606);
+            c = md5_ii(c, d, a, b, x[i + 10], 15, -1051523);
+            b = md5_ii(b, c, d, a, x[i +  1], 21, -2054922799);
+            a = md5_ii(a, b, c, d, x[i +  8],  6,  1873313359);
+            d = md5_ii(d, a, b, c, x[i + 15], 10, -30611744);
+            c = md5_ii(c, d, a, b, x[i +  6], 15, -1560198380);
+            b = md5_ii(b, c, d, a, x[i + 13], 21,  1309151649);
+            a = md5_ii(a, b, c, d, x[i +  4],  6, -145523070);
+            d = md5_ii(d, a, b, c, x[i + 11], 10, -1120210379);
+            c = md5_ii(c, d, a, b, x[i +  2], 15,  718787259);
+            b = md5_ii(b, c, d, a, x[i +  9], 21, -343485551);
+
+            a = safe_add(a, olda);
+            b = safe_add(b, oldb);
+            c = safe_add(c, oldc);
+            d = safe_add(d, oldd);
+        }
+        return [a, b, c, d];
+    }
+
+    /*
+    * Convert an array of little-endian words to a string
+    */
+    function binl2rstr(input) {
+        var i,
+        output = '';
+        for (i = 0; i < input.length * 32; i += 8) {
+            output += String.fromCharCode((input[i >> 5] >>> (i % 32)) & 0xFF);
+        }
+        return output;
+    }
+
+    /*
+    * Convert a raw string to an array of little-endian words
+    * Characters >255 have their high-byte silently ignored.
+    */
+    function rstr2binl(input) {
+        var i,
+        output = [];
+        output[(input.length >> 2) - 1] = undefined;
+        for (i = 0; i < output.length; i += 1) {
+            output[i] = 0;
+        }
+        for (i = 0; i < input.length * 8; i += 8) {
+            output[i >> 5] |= (input.charCodeAt(i / 8) & 0xFF) << (i % 32);
+        }
+        return output;
+    }
+
+    /*
+    * Calculate the MD5 of a raw string
+    */
+    function rstr_md5(s) {
+        return binl2rstr(binl_md5(rstr2binl(s), s.length * 8));
+    }
+
+    /*
+    * Calculate the HMAC-MD5, of a key and some data (raw strings)
+    */
+    function rstr_hmac_md5(key, data) {
+        var i,
+        bkey = rstr2binl(key),
+        ipad = [],
+        opad = [],
+        hash;
+        ipad[15] = opad[15] = undefined;                        
+        if (bkey.length > 16) {
+            bkey = binl_md5(bkey, key.length * 8);
+        }
+        for (i = 0; i < 16; i += 1) {
+            ipad[i] = bkey[i] ^ 0x36363636;
+            opad[i] = bkey[i] ^ 0x5C5C5C5C;
+        }
+        hash = binl_md5(ipad.concat(rstr2binl(data)), 512 + data.length * 8);
+        return binl2rstr(binl_md5(opad.concat(hash), 512 + 128));
+    }
+
+    /*
+    * Convert a raw string to a hex string
+    */
+    function rstr2hex(input) {
+        var hex_tab = '0123456789abcdef',
+        output = '',
+        x,
+        i;
+        for (i = 0; i < input.length; i += 1) {
+            x = input.charCodeAt(i);
+            output += hex_tab.charAt((x >>> 4) & 0x0F) +
+            hex_tab.charAt(x & 0x0F);
+        }
+        return output;
+    }
+
+    /*
+    * Encode a string as utf-8
+    */
+    function str2rstr_utf8(input) {
+        return unescape(encodeURIComponent(input));
+    }
+
+    /*
+    * Take string arguments and return either raw or hex encoded strings
+    */
+    function raw_md5(s) {
+        return rstr_md5(str2rstr_utf8(s));
+    }
+    function hex_md5(s) {
+        return rstr2hex(raw_md5(s));
+    }
+    function raw_hmac_md5(k, d) {
+        return rstr_hmac_md5(str2rstr_utf8(k), str2rstr_utf8(d));
+    }
+    function hex_hmac_md5(k, d) {
+        return rstr2hex(raw_hmac_md5(k, d));
+    }
+    
+    $.md5 = function (string, key, raw) {
+        if (!key) {
+            if (!raw) {
+                return hex_md5(string);
+            } else {
+                return raw_md5(string);
+            }
+        }
+        if (!raw) {
+            return hex_hmac_md5(key, string);
+        } else {
+            return raw_hmac_md5(key, string);
+        }
+    };
+    
+}(typeof jQuery === 'function' ? jQuery : this));
+
+    /*
+    * Declare some global variables
+    */
+    var left_md5_hash, right_md5_hash, left_parse_result, right_parse_result;
+
+    $('#left_EDI_Input_Clear').click(function(){$("#left_EDI_Input_Text").val('');});
+
+    $('#left_EDI_Input_Text').change(function(){
+
+        var inputStr = $('#left_EDI_Input_Text').val();
+
+        inputStr = inputStr.replace(/\r\n/g, '\n');
+
+        inputStr = inputStr.replace(/[\n]{2,}/g, '\n');
+
+        inputStr = inputStr.replace(/\n$/, '');
+
+        if(inputStr.length > 0)
+        {
+            var new_md5_hash = $.md5(inputStr);
+
+            if(new_md5_hash == left_md5_hash) return;
+
+            left_md5_hash = new_md5_hash;
+
+            var segmentsArr = inputStr.split("\n");
+
+            var tagArray = new Array();
+
+            for(s in segmentsArr)
+            {
+                segmentsArr[s] = segmentsArr[s].trim();
+                tagArray[s] = segmentsArr[s].substr(0, 3);
+            }
+
+            $('#left_EDI_Structure_Select').html(groupSplitter(tagArray));
+
+            var optionHtml = '';
+
+            for (var i=0; i<segmentsArr.length; i++) 
+            {
+                optionHtml = optionHtml + "<option value='" + segmentsArr[i].replace(/\'$/, '') + "''>Line " + (i+1) + ": " + segmentsArr[i] + "</option>";
+            }
+
+            $('#left_EDI_Segment_DTL_Select').html(optionHtml);
+        }
+    });
+
+$('#left_EDI_Segment_DTL_Select').change(function() {
+
+    var ediSegment = $('#left_EDI_Segment_DTL_Select').val();
+
+    left_parse_result = readEDISegment(ediSegment);
+
+    $("#left_EDI_Segment_DTL_Holder").html(make_HTML_of_Segment(left_parse_result, right_parse_result));
+
+    if(right_parse_result != undefined)
+    {
+        $("#right_EDI_Segment_DTL_Holder").html(make_HTML_of_Segment(right_parse_result, left_parse_result));
+    }
+
+});
+
+$('#right_EDI_Input_Clear').click(function(){$("#right_EDI_Input_Text").val('');});
+
+$('#right_EDI_Input_Text').change(function(){
+
+    var inputStr = $('#right_EDI_Input_Text').val();
+
+    inputStr = inputStr.replace(/\r\n/g, '\n');
+
+    inputStr = inputStr.replace(/[\n]{2,}/g, '\n');
+
+    inputStr = inputStr.replace(/\n$/, '');
+
+    if(inputStr.length > 0)
+    {
+        var new_md5_hash = $.md5(inputStr);
+
+        if(new_md5_hash == right_md5_hash) return;
+
+        right_md5_hash = new_md5_hash;
+
+        var segmentsArr = inputStr.split("\n");
+
+        var tagArray = new Array();
+
+        for(s in segmentsArr)
+        {
+            segmentsArr[s] = segmentsArr[s].trim();
+            tagArray[s] = segmentsArr[s].substr(0, 3);
+        }
+
+        $('#right_EDI_Structure_Select').html(groupSplitter(tagArray));
+
+        var optionHtml = '';
+
+        for (var i = 0; i<segmentsArr.length; i++) 
+        {
+            optionHtml = optionHtml + "<option value='" + segmentsArr[i].replace(/\'$/, '') + "''>Line " + (i+1) + ": " + segmentsArr[i] + "</option>";
+        }
+
+        $('#right_EDI_Segment_DTL_Select').html(optionHtml);
+    }
+});
+
+$('#right_EDI_Segment_DTL_Select').change(function() {
+
+    var ediSegment = $('#right_EDI_Segment_DTL_Select').val();
+
+    right_parse_result = readEDISegment(ediSegment);
+
+    $("#right_EDI_Segment_DTL_Holder").html(make_HTML_of_Segment(right_parse_result, left_parse_result));
+
+    if(left_parse_result != undefined)
+    {
+        $("#left_EDI_Segment_DTL_Holder").html(make_HTML_of_Segment(left_parse_result, right_parse_result));
+    }
+
+});
+
+document.getElementById('left_file_input').addEventListener('change', left_FileSelect, false);
+
+function left_FileSelect(evt) {
+    var files = evt.target.files; // FileList object
+
+    // Loop through the FileList and render image files as thumbnails.
+    for (var i = 0, f; f = files[i]; i++) {
+
+      var reader = new FileReader();
+
+      reader.onload = (function(theFile) {
+        return function(e) {
+            $("#left_EDI_Input_Text").val(e.target.result);
+            $("#left_EDI_Input_Text").change();
+        };
+    })(f);
+
+    reader.readAsText(f);
+}
+}
+
+document.getElementById('right_file_input').addEventListener('change', right_FileSelect, false);
+
+function right_FileSelect(evt) {
+    var files = evt.target.files; // FileList object
+
+    // Loop through the FileList and render image files as thumbnails.
+    for (var i = 0, f; f = files[i]; i++) {
+
+      var reader = new FileReader();
+
+      reader.onload = (function(theFile) {
+        return function(e) {
+            $("#right_EDI_Input_Text").val(e.target.result);
+            $("#right_EDI_Input_Text").change();
+        };
+    })(f);
+
+    reader.readAsText(f);
+}
+}
+
+</script>
+
+</body>
+
+</html>
